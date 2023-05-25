@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.color.DynamicColors;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        DynamicColors.applyToActivityIfAvailable(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 

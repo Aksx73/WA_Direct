@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
                     String number = et_number.getText().toString();
 
                     if (PhoneNumberUtils.isGlobalPhoneNumber(number)){
-                   // if (number.replaceAll(" ","").length() == 10) {
                         countryCodePicker.registerCarrierNumberEditText(et_number);
                         numberstr = countryCodePicker.getFullNumber();
 

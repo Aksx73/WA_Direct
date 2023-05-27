@@ -37,15 +37,13 @@
             android:layout_marginBottom="0dp"
             app:endIconMode="clear_text"
             app:counterEnabled="true"
-            app:counterMaxLength="10"
             app:startIconDrawable="@drawable/ic_call_24px">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Number"
-                android:maxEms="10"
+                android:hint="WhatsApp Number"
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 

@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                 if (/*checkEmptyField(et_message,lyt_message) &&*/ checkEmptyField(et_number, lyt_number)) {
 
                     messagestr = et_message.getText().toString();
-                    String number = et_number.getText().toString();
+                    String number = et_number.getText().toString().trim().replaceAll(" ","").replace("+","");
 
                     if (PhoneNumberUtils.isGlobalPhoneNumber(number)){
                         countryCodePicker.registerCarrierNumberEditText(et_number);
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     } else {
                         lyt_number.setErrorEnabled(true);
-                        lyt_number.setError("Enter valid number");
+                        lyt_number.setError("Enter valid number without country code");
                     }
 
                 } else {

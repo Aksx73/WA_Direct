@@ -29,7 +29,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/lyt_number"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -50,7 +50,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/lyt_message"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -78,7 +78,7 @@
             android:layout_marginTop="32dp"
             android:paddingStart="24dp"
             android:paddingEnd="24dp"
-            android:text="Send"
+            android:text="Open chat"
             app:icon="@drawable/ic_whatsapp_black_24dp" />
 
 

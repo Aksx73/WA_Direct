@@ -51,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
                 if (/*checkEmptyField(et_message,lyt_message) &&*/ checkEmptyField(et_number, lyt_number)) {
 
                     messagestr = et_message.getText().toString();
-                    String number = et_number.getText().toString().trim().replaceAll(" ","").replace("+","");
+                    String number = et_number.getText().toString().trim().replaceAll(" ", "").replace("+", "");
 
-                    if (PhoneNumberUtils.isGlobalPhoneNumber(number)){
+                    if (PhoneNumberUtils.isGlobalPhoneNumber(number)) {
                         countryCodePicker.registerCarrierNumberEditText(et_number);
                         numberstr = countryCodePicker.getFullNumber();
 
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
                             Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse("https://api.whatsapp.com/send?phone=" + numberstr +
                                     "&text=" + messagestr));
                             startActivity(i);
-                             et_message.getText().clear();
+                            et_message.getText().clear();
                             et_number.getText().clear();
                             lyt_number.setErrorEnabled(false);
                             lyt_number.setError("");
@@ -130,6 +130,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (et_number != null && et_number.hasFocus()) {
+            et_number.clearFocus();
+        } else if (et_message != null && et_message.hasFocus()) {
+            et_message.clearFocus();
+        } else super.onBackPressed();
     }
 
     private boolean isWhatappInstalled() {

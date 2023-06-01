@@ -13,9 +13,11 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.color.DynamicColors;
+import com.google.android.material.elevation.SurfaceColors;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private MaterialButton bt_send;
     private String messagestr, numberstr = "";
     private LinearLayout root;
+    private ScrollView parent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,11 @@ public class MainActivity extends AppCompatActivity {
         lyt_number = findViewById(R.id.lyt_number);
         lyt_message = findViewById(R.id.lyt_message);
         bt_send = findViewById(R.id.sendbtn);
+        parent = findViewById(R.id.parent);
+
+        getWindow().setNavigationBarColor(SurfaceColors.SURFACE_2.getColor(MainActivity.this));
+        getWindow().setStatusBarColor(SurfaceColors.SURFACE_2.getColor(MainActivity.this));
+        parent.setBackgroundColor(SurfaceColors.SURFACE_2.getColor(MainActivity.this));
 
         bt_send.setOnClickListener(new View.OnClickListener() {
             @Override

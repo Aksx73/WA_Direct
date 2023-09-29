@@ -97,26 +97,6 @@ class MainActivity : AppCompatActivity() {
 
             override fun afterTextChanged(editable: Editable) {}
         })
-
-        /*  et_message.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (et_message.getText().toString().trim().equals("")){
-                    lyt_message.setErrorEnabled(true);
-                    lyt_message.setError("Required");
-                }else {
-                    lyt_message.setErrorEnabled(false);
-                    lyt_message.setError("");
-                }
-            }
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });*/
     }
 
     override fun onBackPressed() {
@@ -128,7 +108,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val isWhatappInstalled: Boolean
-        private get() {
+        get() {
             val packageManager = packageManager
             val whatsappInstalled: Boolean = try {
                 packageManager.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
@@ -144,7 +124,6 @@ class MainActivity : AppCompatActivity() {
         inputLayout: TextInputLayout?
     ): Boolean {
         return if (editText!!.text.toString().trim { it <= ' ' } == "") {
-            // editText.setError("Required");
             inputLayout!!.error = "Required"
             false
         } else {

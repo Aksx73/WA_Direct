@@ -58,19 +58,17 @@ class MainActivity : AppCompatActivity() {
                     Log.d("TAG", "onClick: " + et_number?.text)
                     Log.d("TAG", "onClick: $numberstr")
                     if (isWhatappInstalled) {
-                        val i = Intent(
-                            Intent.ACTION_VIEW, Uri.parse(
-                                "https://api.whatsapp.com/send?phone=" + numberstr +
-                                        "&text=" + messagestr
-                            )
-                        )
+                        val uriString = "https://api.whatsapp.com/send?phone=$numberstr&text=$messagestr"
+                        Log.d("TAG", "Final url: $uriString")
+                        val i = Intent(Intent.ACTION_VIEW, Uri.parse(uriString))
                         startActivity(i)
                         et_message?.text!!.clear()
                         et_number?.text!!.clear()
                         lyt_number?.isErrorEnabled = false
                         lyt_number?.error = ""
                         lyt_number?.clearFocus()
-                    } else {
+                    }
+                    else {
                         Snackbar.make(root!!, "Whatsapp is not installed", Snackbar.LENGTH_SHORT)
                             .show()
                     }

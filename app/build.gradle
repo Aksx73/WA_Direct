@@ -1,16 +1,16 @@
 plugins {
     id 'com.android.application'
+    id 'kotlin-android'
 }
 
 android {
-    compileSdkVersion 33
-    buildToolsVersion "30.0.3"
     namespace 'com.android.waintent'
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.android.waintent"
-        minSdkVersion 21
-        targetSdkVersion 33
+        minSdk 21
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -30,13 +30,12 @@ android {
 }
 
 dependencies {
-
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-
     implementation 'com.hbb20:ccp:2.7.0'
-    //implementation 'com.github.Aksx73:CountryCodePickerProject:1.1'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

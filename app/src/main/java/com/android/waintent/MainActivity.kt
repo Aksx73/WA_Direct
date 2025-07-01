@@ -130,18 +130,6 @@ class MainActivity : AppCompatActivity() {
         } else super.onBackPressed()
     }
 
-    private val isWhatappInstalled: Boolean
-        get() {
-            val packageManager = packageManager
-            val whatsappInstalled: Boolean = try {
-                packageManager.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
-                true
-            } catch (e: PackageManager.NameNotFoundException) {
-                false
-            }
-            return whatsappInstalled
-        }
-
     private fun checkEmptyField(
         editText: TextInputEditText?,
         inputLayout: TextInputLayout?

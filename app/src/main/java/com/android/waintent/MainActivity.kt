@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.ScrollView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.color.DynamicColors
@@ -20,8 +21,13 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.hbb20.CountryCodePicker
+import androidx.core.net.toUri
+import com.android.waintent.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding : ActivityMainBinding
+
     private var countryCodePicker: CountryCodePicker? = null
     private var et_number: TextInputEditText? = null
     private var et_message: TextInputEditText? = null
@@ -35,7 +41,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         DynamicColors.applyToActivityIfAvailable(this)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         root = findViewById(R.id.lyt_root)
         countryCodePicker = findViewById(R.id.countryCode)
         et_number = findViewById(R.id.et_number)
@@ -57,10 +66,10 @@ class MainActivity : AppCompatActivity() {
                     numberstr = countryCodePicker?.fullNumber!!
                     Log.d("TAG", "onClick: " + et_number?.text)
                     Log.d("TAG", "onClick: $numberstr")
-                    if (isWhatappInstalled) {
+                    if (Utils.isWhatsappInstalled(packageManager)) {
                         val uriString = "https://api.whatsapp.com/send?phone=$numberstr&text=$messagestr"
                         Log.d("TAG", "Final url: $uriString")
-                        val i = Intent(Intent.ACTION_VIEW, Uri.parse(uriString))
+                        val i = Intent(Intent.ACTION_VIEW, uriString.toUri())
                         startActivity(i)
                         et_message?.text!!.clear()
                         et_number?.text!!.clear()
@@ -95,6 +104,22 @@ class MainActivity : AppCompatActivity() {
 
             override fun afterTextChanged(editable: Editable) {}
         })
+
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (et_number != null && et_number!!.hasFocus()) {
+                    et_number!!.clearFocus()
+                } else if (et_message != null && et_message!!.hasFocus()) {
+                    et_message!!.clearFocus()
+                } else {
+                    // Call the default back action
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        })
+
     }
 
     override fun onBackPressed() {

@@ -29,67 +29,85 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         DynamicColors.applyToActivityIfAvailable(this)
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        root = findViewById(R.id.lyt_root)
-        countryCodePicker = findViewById(R.id.countryCode)
-        et_number = findViewById(R.id.et_number)
-        et_message = findViewById(R.id.et_message)
-        lyt_number = findViewById(R.id.lyt_number)
-        lyt_message = findViewById(R.id.lyt_message)
-        bt_send = findViewById(R.id.sendbtn)
-        parent = findViewById(R.id.parent)
-        window.navigationBarColor = SurfaceColors.SURFACE_2.getColor(this@MainActivity)
-        window.statusBarColor = SurfaceColors.SURFACE_2.getColor(this@MainActivity)
-        parent?.setBackgroundColor(SurfaceColors.SURFACE_2.getColor(this@MainActivity))
-        bt_send?.setOnClickListener {
-            if (checkEmptyField(et_number, lyt_number)) {
-                messagestr = et_message?.text.toString()
-                val number = et_number?.text.toString().trim { it <= ' ' }
-                    .replace(" ".toRegex(), "").replace("+", "")
-                if (PhoneNumberUtils.isGlobalPhoneNumber(number)) {
-                    countryCodePicker?.registerCarrierNumberEditText(et_number)
-                    numberstr = countryCodePicker?.fullNumber!!
-                    Log.d("TAG", "onClick: " + et_number?.text)
-                    Log.d("TAG", "onClick: $numberstr")
-                    if (Utils.isWhatsappInstalled(packageManager)) {
-                        val uriString = "https://api.whatsapp.com/send?phone=$numberstr&text=$messagestr"
-                        Log.d("TAG", "Final url: $uriString")
-                        val i = Intent(Intent.ACTION_VIEW, uriString.toUri())
-                        startActivity(i)
-                        et_message?.text!!.clear()
-                        et_number?.text!!.clear()
-                        lyt_number?.isErrorEnabled = false
-                        lyt_number?.error = ""
-                        lyt_number?.clearFocus()
-                    }
-                    else {
-                        Snackbar.make(root!!, "Whatsapp is not installed", Snackbar.LENGTH_SHORT)
-                            .show()
-                    }
-                } else {
-                    lyt_number?.isErrorEnabled = true
-                    lyt_number?.error = "Enter valid number without country code"
-                }
-            } else {
-                //checkEmptyField(et_message,lyt_message);
-                checkEmptyField(et_number, lyt_number)
-            }
+        ViewCompat.setOnApplyWindowInsetsListener(binding.parent) { v, insets ->
+            val bars = insets.getInsets(
+                WindowInsetsCompat.Type.systemBars()
+                        or WindowInsetsCompat.Type.displayCutout()
+            )
+            v.updatePadding(
+                left = bars.left,
+                top = bars.top,
+                right = bars.right,
+                bottom = bars.bottom,
+            )
+            WindowInsetsCompat.CONSUMED
         }
-        et_number?.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
-            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-                if (TextUtils.isEmpty(et_number?.text)) {
-                    lyt_number?.isErrorEnabled = true
-                    lyt_number?.error = "Required"
+
+        //window.navigationBarColor = SurfaceColors.SURFACE_2.getColor(this@MainActivity)
+        //window.statusBarColor = SurfaceColors.SURFACE_2.getColor(this@MainActivity)
+        //binding.parent.setBackgroundColor(SurfaceColors.SURFACE_2.getColor(this@MainActivity))
+
+        binding.apply {
+            sendbtn.setOnClickListener {
+                if (checkEmptyField(etNumber, lytNumber)) {
+                    messagestr = etMessage.text.toString()
+                    val number = etNumber.text.toString().trim { it <= ' ' }
+                        .replace(" ".toRegex(), "").replace("+", "")
+                    if (PhoneNumberUtils.isGlobalPhoneNumber(number)) {
+                        countryCode.registerCarrierNumberEditText(etNumber)
+
+                        numberstr = countryCode.fullNumber!!
+                        Log.d("TAG", "onClick: " + etNumber.text)
+                        Log.d("TAG", "onClick: $numberstr")
+                        if (Utils.isWhatsappInstalled(packageManager)) {
+                            val uriString =
+                                "https://api.whatsapp.com/send?phone=$numberstr&text=$messagestr"
+                            Log.d("TAG", "Final url: $uriString")
+                            val i = Intent(Intent.ACTION_VIEW, uriString.toUri())
+                            startActivity(i)
+                            etMessage.text!!.clear()
+                            etNumber.text!!.clear()
+                            lytNumber.isErrorEnabled = false
+                            lytNumber.error = ""
+                            lytNumber.clearFocus()
+                        } else {
+                            Snackbar.make(root, "Whatsapp is not installed", Snackbar.LENGTH_SHORT)
+                                .show()
+                        }
+                    } else {
+                        lytNumber.isErrorEnabled = true
+                        lytNumber.error = "Enter valid number without country code"
+                    }
                 } else {
-                    lyt_number?.isErrorEnabled = false
-                    lyt_number?.error = ""
+                    //checkEmptyField(et_message,lyt_message);
+                    checkEmptyField(etNumber, lytNumber)
                 }
             }
+
+            etNumber.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(
+                    charSequence: CharSequence,
+                    i: Int,
+                    i1: Int,
+                    i2: Int
+                ) {
+                }
+
+                override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+                    if (TextUtils.isEmpty(etNumber.text)) {
+                        lytNumber.isErrorEnabled = true
+                        lytNumber.error = "Required"
+                    } else {
+                        lytNumber.isErrorEnabled = false
+                        lytNumber.error = ""
+                    }
+                }
 
                 override fun afterTextChanged(editable: Editable) {}
             })

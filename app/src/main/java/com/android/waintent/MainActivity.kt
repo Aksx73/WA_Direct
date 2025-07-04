@@ -1,43 +1,32 @@
 package com.android.waintent
 
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.telephony.PhoneNumberUtils
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
-import android.view.View
-import android.widget.LinearLayout
-import android.widget.ScrollView
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.button.MaterialButton
+import androidx.core.net.toUri
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
+import com.android.waintent.databinding.ActivityMainBinding
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.elevation.SurfaceColors
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import com.hbb20.CountryCodePicker
-import androidx.core.net.toUri
-import com.android.waintent.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityMainBinding
-
-    private var countryCodePicker: CountryCodePicker? = null
-    private var et_number: TextInputEditText? = null
-    private var et_message: TextInputEditText? = null
-    private var lyt_number: TextInputLayout? = null
-    private var lyt_message: TextInputLayout? = null
-    private var bt_send: MaterialButton? = null
+    private lateinit var binding: ActivityMainBinding
     private var messagestr: String? = null
     private var numberstr = ""
-    private var root: LinearLayout? = null
-    private var parent: ScrollView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         DynamicColors.applyToActivityIfAvailable(this)
         super.onCreate(savedInstanceState)
@@ -102,16 +91,19 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            override fun afterTextChanged(editable: Editable) {}
-        })
+                override fun afterTextChanged(editable: Editable) {}
+            })
+
+        }
+
 
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (et_number != null && et_number!!.hasFocus()) {
-                    et_number!!.clearFocus()
-                } else if (et_message != null && et_message!!.hasFocus()) {
-                    et_message!!.clearFocus()
+                if (binding.etNumber.hasFocus()) {
+                    binding.etNumber.clearFocus()
+                } else if (binding.etMessage.hasFocus()) {
+                    binding.etMessage.clearFocus()
                 } else {
                     // Call the default back action
                     isEnabled = false
@@ -120,14 +112,6 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-    }
-
-    override fun onBackPressed() {
-        if (et_number != null && et_number!!.hasFocus()) {
-            et_number!!.clearFocus()
-        } else if (et_message != null && et_message!!.hasFocus()) {
-            et_message!!.clearFocus()
-        } else super.onBackPressed()
     }
 
     private fun checkEmptyField(

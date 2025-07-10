@@ -16,7 +16,7 @@
         android:padding="24dp"
         android:orientation="vertical">
 
-        <com.hbb20.CountryCodePicker
+        <!--<com.hbb20.CountryCodePicker
             android:id="@+id/countryCode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
             app:ccp_rememberLastSelection="true"
             app:ccpDialog_fastScroller_bubbleColor="@color/colorAccent"
             app:ccpDialog_textColor="?android:textColorSecondary"
-            app:ccp_contentColor="?android:textColorPrimary" />
+            app:ccp_contentColor="?android:textColorPrimary" />-->
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/lyt_number"

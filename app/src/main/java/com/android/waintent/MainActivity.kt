@@ -217,7 +217,7 @@ fun HomeScreen(
                 Icon(imageVector = Icons.Outlined.Phone, contentDescription = null)
             },
             shape = RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp),
-            label = { Text("Whatsapp number") },
+            label = { Text("Whatsapp Number") },
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number
@@ -234,8 +234,15 @@ fun HomeScreen(
             },
             isError = showPhoneNumberError,
             supportingText = {
-                if (showPhoneNumberError) {
-                    Text("Required", color = MaterialTheme.colorScheme.error)
+                Row(Modifier.fillMaxWidth()) {
+                    if (showPhoneNumberError) {
+                        Text(
+                            "Required",
+                            color = MaterialTheme.colorScheme.error,
+                        )
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text("${phoneNumber.length}")
                 }
             },
             singleLine = true
@@ -247,8 +254,7 @@ fun HomeScreen(
             value = message,
             onValueChange = { message = it },
             modifier = Modifier.fillMaxWidth(),
-            label = { Text("Enter message") },
-            placeholder = { Text("Enter your message here") },
+            label = { Text("Message") },
             supportingText = { Text("Optional") },
             leadingIcon = {
                 Icon(
@@ -275,26 +281,24 @@ fun HomeScreen(
 
         Spacer(Modifier.size(32.dp))
 
-       // Box(Modifier.fillMaxWidth()) {
-            Button(
-                onClick = {
-                    if (phoneNumber.isBlank()) {
-                        showPhoneNumberError = true
-                    } else {
-                        showPhoneNumberError = false
-                        onButtonClick(phoneNumber, message)
-                    }
-                },
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_whatsapp_black_24dp),
-                    contentDescription = null
-                )
-                Spacer(Modifier.size(8.dp))
-                Text("Open chat")
-            }
-      //  }
+        Button(
+            onClick = {
+                if (phoneNumber.isBlank()) {
+                    showPhoneNumberError = true
+                } else {
+                    showPhoneNumberError = false
+                    onButtonClick(countryCode, phoneNumber, message)
+                }
+            },
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_whatsapp_black_24dp),
+                contentDescription = null
+            )
+            Spacer(Modifier.size(8.dp))
+            Text("Open chat")
+        }
 
     }
 }

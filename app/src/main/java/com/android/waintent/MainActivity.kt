@@ -2,6 +2,7 @@ package com.android.waintent
 
 import android.content.Intent
 import android.os.Bundle
+import android.telephony.PhoneNumberUtils
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -9,7 +10,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -69,7 +69,6 @@ import com.arpitkatiyarprojects.countrypicker.models.FlagDimensions
 import com.arpitkatiyarprojects.countrypicker.models.SelectedCountryDisplayProperties
 import com.arpitkatiyarprojects.countrypicker.models.SelectedCountryProperties
 import com.arpitkatiyarprojects.countrypicker.models.SelectedCountryTextStyles
-import com.arpitkatiyarprojects.countrypicker.utils.CountryPickerUtils
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -89,9 +88,7 @@ class MainActivity : ComponentActivity() {
                     HomeScreen(
                         modifier = Modifier.padding(innerPadding),
                         onButtonClick = { countryCode, countryPhoneCode, phoneNumber, message ->
-
-                            if (CountryPickerUtils.isMobileNumberValid(phoneNumber, countryCode)) {
-                                //val fullPhoneNumber = "$countryPhoneCode$phoneNumber"
+                            if (PhoneNumberUtils.isGlobalPhoneNumber(phoneNumber)) {
                                 val formattedPhoneNumber = Utils.formatPhoneNumberForWhatsApp(
                                     countryPhoneCode,
                                     phoneNumber
@@ -113,7 +110,7 @@ class MainActivity : ComponentActivity() {
                                 keyboardController?.hide()
                                 scope.launch {
                                     snackBarHostState.showSnackbar(
-                                        "Enter valid number without country code",
+                                        "Enter valid number without country code and select country from given dropdown.",
                                         duration = SnackbarDuration.Short
                                     )
                                 }
@@ -137,14 +134,12 @@ class MainActivity : ComponentActivity() {
             Log.d("TAG", "Final url: $url")
             val intent = Intent(Intent.ACTION_VIEW, url.toUri())
             startActivity(intent)
-            //todo clear all text field and any focus and error message
         } else {
             onShowSnackbar("Whatsapp is not installed", SnackbarDuration.Short)
         }
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -166,12 +161,12 @@ fun HomeScreen(
     ) {
         Box {
             Column(
-                modifier = Modifier
-                    //.fillMaxWidth()
-                    .padding(24.dp),
+                modifier = Modifier.padding(24.dp),
                 verticalArrangement = Arrangement.Center
             ) {
-                CountryPickerView { country ->
+                CountryPickerView(
+
+                ) { country ->
                     countryCode = country.countryCode
                     countryPhoneNumberCode = country.countryPhoneNumberCode
                 }
@@ -181,7 +176,7 @@ fun HomeScreen(
                 TextField(
                     value = phoneNumber,
                     onValueChange = { input ->
-                        phoneNumber = input.filter { it.isDigit() }
+                        phoneNumber = input.filter { it.isDigit() || it == '+' }
                         showPhoneNumberError = false
                     },
                     leadingIcon = {
@@ -191,7 +186,7 @@ fun HomeScreen(
                     label = { Text("Whatsapp Number") },
                     modifier = Modifier.fillMaxWidth(),
                     keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Number
+                        keyboardType = KeyboardType.Phone
                     ),
                     trailingIcon = {
                         if (phoneNumber.isNotEmpty()) {

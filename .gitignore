@@ -2,7 +2,7 @@
 .gradle
 .kotlin
 /local.properties
-/.idea
+/.idea/*
 .DS_Store
 /build
 /captures
@@ -11,3 +11,5 @@
 local.properties
 keystore.properties
 /keystore.properties
+app/release
+/keys

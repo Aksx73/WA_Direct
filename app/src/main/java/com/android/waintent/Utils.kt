@@ -1,6 +1,8 @@
 package com.android.waintent
 
 import android.content.pm.PackageManager
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 import java.util.regex.Pattern
 
 object Utils {
@@ -19,6 +21,21 @@ object Utils {
         } catch (e: PackageManager.NameNotFoundException) {
             false
         }
+    }
+
+    fun urlEncodeMessage(message: String?): String {
+        message?.let {
+            return URLEncoder.encode(message, StandardCharsets.UTF_8.toString())
+        }
+        return ""
+    }
+
+    fun formatPhoneNumberForWhatsApp(countryPhoneCode: String, rawPhoneNumber: String): String {
+        val cleanNumber = rawPhoneNumber
+            .replace(Regex("[^\\d]"), "") // Remove non-digits
+            .replace(Regex("^0+"), "") // Remove leading zeroes
+        val cleanCountryCode = countryPhoneCode.replace(Regex("^[+0]+"), "") //remove leading zero and '+' symbol
+        return cleanCountryCode + cleanNumber
     }
 
 }
